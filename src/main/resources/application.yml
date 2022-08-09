@@ -1,1 +1,22 @@
-
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  redis:
+    host: ${HOST}
+    port: ${PORT}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${NAME}
+    password: ${PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+auth:
+  jwt:
+    header: ${HEADER}
+    secret: ${SECRET}
+    exp:
+      access: ${ACCESS}
+      refresh: ${REFRESH}
