@@ -116,6 +116,7 @@ public class UserServiceImpl implements UserService{
                                 .id(novel.getId())
                                 .title(novel.getTitle())
                                 .postman(novel.getUser().getNickname())
+                                .category(novel.getCategory())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
