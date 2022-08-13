@@ -21,16 +21,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "nickname")
-    private String name;
+    @Column(name = "nickname")
+    private String nickname;
 
-    @JoinColumn(name = "account_id")
+    @Column(name = "account_id")
     private String accountId;
 
-    @JoinColumn(name = "password")
+    @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "novel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user")
     private List<Novel> novelList;
-
 }
