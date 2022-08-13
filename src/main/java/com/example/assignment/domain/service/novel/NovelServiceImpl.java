@@ -99,6 +99,7 @@ public class NovelServiceImpl implements NovelService{
                         .id(likes.getNovel().getId())
                         .title(likes.getNovel().getTitle())
                         .postman(likes.getNovel().getUser().getNickname())
+                        .category(likes.getNovel().getCategory())
                         .build())
                 .collect(Collectors.toList());
         return NovelListTitleResponse.builder()
