@@ -17,4 +17,6 @@ public class NovelTitleResponse {
 
     private String postman;
 
+    private Long category;
+
 }
