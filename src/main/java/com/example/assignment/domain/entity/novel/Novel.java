@@ -20,10 +20,13 @@ public class Novel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "title")
+    @Column(name = "title")
     private String title;
 
-    @JoinColumn(name = "main_text")
+    @Column(name = "category")
+    private Long category;
+
+    @Column(name = "text")
     private String text;
 
     @ManyToOne
