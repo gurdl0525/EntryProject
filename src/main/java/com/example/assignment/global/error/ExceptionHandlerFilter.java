@@ -34,7 +34,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }catch (UnAuthorizedTokenException e){
             log.error("exception exception handler filter");
-            setErrorResponse(ErrorCode.UN_AUTHORIZED_TOKEN_EXCEPTION, response, e);
+            throw UnAuthorizedTokenException.getInstance();
         } catch (RuntimeException e){
             log.error("runtime exception exception handler filter");
             setErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, response, e);
