@@ -7,6 +7,7 @@ import com.example.assignment.domain.controller.dto.response.NovelListTitleRespo
 import com.example.assignment.domain.controller.dto.response.NovelResponse;
 import com.example.assignment.domain.service.novel.NovelService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class NovelController {
     private final NovelService novelService;
 
     @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
     public MessageResponse postNovel(@RequestBody PostNovelRequest request){
         return novelService.postNovel(request);
     }
