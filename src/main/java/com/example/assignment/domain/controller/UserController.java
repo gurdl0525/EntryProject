@@ -1,9 +1,6 @@
 package com.example.assignment.domain.controller;
 
-import com.example.assignment.domain.controller.dto.request.CreateMemberRequest;
-import com.example.assignment.domain.controller.dto.request.LoginMemberRequest;
-import com.example.assignment.domain.controller.dto.request.ReIssueTokenRequest;
-import com.example.assignment.domain.controller.dto.request.WithdrawalRequest;
+import com.example.assignment.domain.controller.dto.request.*;
 import com.example.assignment.domain.controller.dto.response.IssueTokenResponse;
 import com.example.assignment.domain.controller.dto.response.MessageResponse;
 import com.example.assignment.domain.controller.dto.response.UserInfoResponse;
@@ -11,6 +8,8 @@ import com.example.assignment.domain.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account")
@@ -21,7 +20,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public MessageResponse createMember(@RequestBody CreateMemberRequest request){
+    public MessageResponse createMember(@Valid @RequestBody CreateMemberRequest request){
         return userService.join(request);
     }
 
@@ -35,13 +34,23 @@ public class UserController {
         return userService.withdrawal(request);
     }
 
-    @GetMapping("/info/{nickname}")
-    public UserInfoResponse getUserInfo(@PathVariable("nickname") String nickname){
-        return userService.getUserInfo(nickname);
+    @GetMapping("/info/{account_id}")
+    public UserInfoResponse getUserInfo(@PathVariable("account_id") String accountId){
+        return userService.getUserInfo(accountId);
     }
 
     @PostMapping("/re-issue")
     public IssueTokenResponse refresh(@RequestBody ReIssueTokenRequest request){
         return userService.refresh(request);
+    }
+
+    @PatchMapping("/edit/nickname")
+    public MessageResponse editNickname(@RequestBody EditNicknameRequest request){
+        return userService.editNickname(request);
+    }
+
+    @PatchMapping("/edit/password")
+    public MessageResponse editPassword(@RequestBody EditPasswordRequest request){
+        return userService.editPassword(request);
     }
 }
