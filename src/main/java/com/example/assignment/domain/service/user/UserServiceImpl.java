@@ -1,13 +1,7 @@
 package com.example.assignment.domain.service.user;
 
-import com.example.assignment.domain.controller.dto.request.CreateMemberRequest;
-import com.example.assignment.domain.controller.dto.request.LoginMemberRequest;
-import com.example.assignment.domain.controller.dto.request.ReIssueTokenRequest;
-import com.example.assignment.domain.controller.dto.request.WithdrawalRequest;
+import com.example.assignment.domain.controller.dto.request.*;
 import com.example.assignment.domain.controller.dto.response.*;
-import com.example.assignment.domain.entity.likes.Likes;
-import com.example.assignment.domain.entity.likes.LikesRepository;
-import com.example.assignment.domain.entity.novel.Novel;
 import com.example.assignment.domain.entity.novel.NovelRepository;
 import com.example.assignment.domain.entity.redis.RefreshToken;
 import com.example.assignment.domain.entity.redis.RefreshTokenRepository;
@@ -106,11 +100,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserInfoResponse getUserInfo(String nickname) {
-        User user = userRepository.findByNickname(nickname)
+    public UserInfoResponse getUserInfo(String accountId) {
+        User user = userRepository.findByAccountId(accountId)
                 .orElseThrow(NotFoundUserException::getInstance);
         return UserInfoResponse.builder()
-                .nickname(nickname)
+                .nickname(user.getNickname())
                 .novelListTitle(novelRepository.findNovelsByUser(user).stream()
                         .map(novel -> NovelTitleResponse.builder()
                                 .id(novel.getId())
@@ -133,6 +127,38 @@ public class UserServiceImpl implements UserService{
                 .accessToken(jwtTokenProvider.generateAccessToken(userId))
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Override
+    public MessageResponse editNickname(EditNicknameRequest request) {
+        User user = authenticationFacade.getCurrentUser();
+        userRepository.save(User.builder()
+                .id(user.getId())
+                .accountId(user.getAccountId())
+                .password(user.getPassword())
+                .nickname(request.getNickname())
+                .novelList(user.getNovelList())
+                .build());
+        return MessageResponse.builder()
+                .message("닉네임이 " + request.getNickname() + "으로 변경되었습니다.")
+                .build();
+    }
+
+    @Override
+    public MessageResponse editPassword(EditPasswordRequest request) {
+        User user = authenticationFacade.getCurrentUser();
+        if(passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            userRepository.save(User.builder()
+                    .id(user.getId())
+                    .accountId(user.getAccountId())
+                    .password(passwordEncoder.encode(request.getChangePassword()))
+                    .nickname(user.getNickname())
+                    .novelList(user.getNovelList())
+                    .build());
+            return MessageResponse.builder()
+                    .message("비밀번호가 변경되었습니다.")
+                    .build();
+        } throw PasswordInconsistencyException.getInstance();
     }
 
 }
