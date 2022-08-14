@@ -39,7 +39,7 @@ public class LikesServiceImpl implements LikesService{
                 .novel(novel)
                 .build());
         return MessageResponse.builder()
-                .message("팔로우 완료")
+                .message("좋아요 완료")
                 .build();
     }
 
