@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Builder
@@ -25,6 +26,7 @@ public class User {
     private String nickname;
 
     @Column(name = "account_id")
+    @Pattern(regexp = "[a-z\\d]{4,8}")
     private String accountId;
 
     @Column(name = "password")
