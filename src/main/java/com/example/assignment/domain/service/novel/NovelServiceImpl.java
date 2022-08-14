@@ -53,7 +53,7 @@ public class NovelServiceImpl implements NovelService{
                 .title(novel.getTitle())
                 .text(novel.getText())
                 .category(novel.getCategory())
-                .follower(likesRepository.findLikesByNovel(novel).size())
+                .likes(likesRepository.findLikesByNovel(novel).size())
                 .build();
     }
 
@@ -62,7 +62,7 @@ public class NovelServiceImpl implements NovelService{
         User user = authenticationFacade.getCurrentUser();
         Novel novel = novelRepository.findById(request.getId())
                 .filter(novel1 -> novel1.getUser().equals(user))
-                .orElseThrow(NotFoundNovelException::getInstance);
+                .orElseThrow(UnAuthorizedTokenException::getInstance);
         Novel novel1 = novelRepository.save(Novel.builder()
                         .id(novel.getId())
                         .title(request.getTitle())
@@ -73,9 +73,10 @@ public class NovelServiceImpl implements NovelService{
         return NovelResponse.builder()
                 .id(novel1.getId())
                 .title(novel1.getTitle())
+                .postman(novel1.getUser().getNickname())
                 .category(novel1.getCategory())
                 .text(novel1.getText())
-                .follower(likesRepository.findLikesByNovel(novel1).size())
+                .likes(likesRepository.findLikesByNovel(novel1).size())
                 .build();
     }
 
