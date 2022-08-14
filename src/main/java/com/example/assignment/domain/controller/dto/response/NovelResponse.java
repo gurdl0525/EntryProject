@@ -21,6 +21,6 @@ public class NovelResponse {
 
     private Long category;
 
-    private Integer follower;
+    private Integer likes;
 
 }
